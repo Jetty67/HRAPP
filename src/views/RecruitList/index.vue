@@ -1,9 +1,16 @@
 <template>
     <div class="app-container">
-        <el-table style="height:600px" v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+        <div style="width:100%;margin-bottom: 10px;">
+            <el-input v-model="input" placeholder="请输入关键词" size="small" style="width:200px;margin-right: 10px;">
+            </el-input>
+            <el-button style="margin-right: 10px;" type="primary" size="small">搜索</el-button>
+            <el-button icon="el-icon-edit" type="default" size="small">添加</el-button>
+        </div>
+        <el-table style="height:700px" v-loading="listLoading" :data="list" element-loading-text="Loading" fit
+            highlight-current-row>
             <el-table-column align="center" label="ID" width="95">
                 <template slot-scope="scope">
-                    {{ scope.$index +1 }}
+                    {{ scope.$index + 1 }}
                 </template>
             </el-table-column>
             <el-table-column label="文章标题">
@@ -34,13 +41,21 @@
                     <span>{{ scope.row.display_time }}</span>
                 </template>
             </el-table-column>
+
+            <el-table-column align="center" prop="created_at" label="操作" width="100">
+                <template>
+                    <el-select  size="small" v-model="value"  placeholder="编辑" @change="Dopreate">
+                        <el-option   v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-table-column>
         </el-table>
         <div style=" height: 50px; line-height: 50px; margin-top: 10px;">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[5,10,15,20]" :page-size="pageSize"
+                :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
-
         </div>
 
     </div>
@@ -64,24 +79,36 @@ export default {
         return {
             list: null,
             listLoading: true,
-            currentPage:1,
-            pageSize:5,
-            total:0
+            currentPage: 1,
+            pageSize: 10,
+            total: 0,
+            input: '',
+            options:[
+                {
+                    value:1,
+                    label:'编辑'
+                },
+                 {
+                    value:0,
+                    label:'删除'
+                }
+            ],
+            value:1
         };
     },
     created() {
-        this.fetchData(this.currentPage,this.pageSize);
+        this.fetchData(this.currentPage, this.pageSize);
     },
     methods: {
-        fetchData(curpage=this.currentPage,pageSize = this.pageSize) {
-            console.log('修改页面:',curpage,pageSize);
-            console.log('pageSize：',pageSize);
+        fetchData(curpage = this.currentPage, pageSize = this.pageSize) {
+            console.log('修改页面:', curpage, pageSize);
+            console.log('pageSize：', pageSize);
             this.listLoading = true;
             getList().then((response) => {
-                let start = (curpage-1)*pageSize
-                let end = curpage *pageSize
-                console.log('页面数据',curpage,start,end);
-                this.list = response.data.items.slice(start,end);
+                let start = (curpage - 1) * pageSize
+                let end = curpage * pageSize
+                console.log('页面数据', curpage, start, end);
+                this.list = response.data.items.slice(start, end);
                 this.total = response.data.items.length
                 this.listLoading = false;
             });
@@ -100,6 +127,11 @@ export default {
             this.fetchData()
 
 
+        },
+
+        //操作
+        Dopreate(e){
+            console.log('操作选择项:',e);
         }
     },
 };
