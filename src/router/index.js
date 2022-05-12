@@ -43,6 +43,7 @@ export const constantRoutes = [
         hidden: true
     },
 
+
     {
         path: '/',
         component: Layout,
@@ -54,11 +55,6 @@ export const constantRoutes = [
             meta: { title: '首页', icon: 'dashboard' }
         }]
     },
-
-
-
-
-
     {
         path: '/RecruitList',
         component: Layout,
@@ -80,8 +76,9 @@ export const constantRoutes = [
                 path: 'KnowledgeList',
                 name: '知识列表',
                 component: () => import('@/views/KnowledgeList/index'),
-                meta: { title: '知识列表', icon: 'form' }
-            }
+                meta: { title: '知识列表', icon: 'form' },
+            },
+
         ]
     },
 
@@ -94,30 +91,57 @@ export const constantRoutes = [
                 path: 'ActiveList',
                 name: '动态列表',
                 component: () => import('@/views/ActiveList/index'),
-                meta: { title: '动态列表', icon: 'form' }
+                meta: { title: '动态列表', icon: 'form' },
             }
         ]
     },
 
-    //SystemAdmin 
+
     {
-        
-        meta: {
-            title: '系统管理'
-        },
         path: '/SystemAdmin',
+        name: '系统管理',
+        meta: {
+            title: "系统管理",
+            icon: "el-icon-goods",
+        },
         component: Layout,
-        redirect: '/SystemAdmin',
-        children: [
-            
-            {
-                path: 'UserList',
-                name: '用户管理',
-                component: () => import('@/views/UserList/index'),
-                meta: { title: '用户管理', icon: 'form' }
+        children: [{
+            path: 'SystemAdmin',
+            name: '用户管理',
+            meta: {
+                title: '用户管理',
+                icon: 'el-icon-info'
             },
-        ]
+            component: () => import('@/views/UserList/index')
+        },
+        {
+            path: 'RoleList',
+            name: '角色管理',
+            meta: {
+                title: '角色管理',
+                icon: 'el-icon-info'
+            },
+            component: () => import('@/views/RoleList/index')
+        }]
     },
+
+
+    // //SystemAdmin 
+    // {
+    //     path: '/SystemAdmin',
+    //     component: Layout,
+    //     name: '系统管理',
+    //     meta: { title: '系统管理' },
+    //     redirect: '/SystemAdmin',
+    //     children: [
+    //         {
+    //             path: 'UserList',
+    //             name: '用户管理',
+    //             component: () => import('@/views/UserList/index'),
+    //             meta: { title: '用户管理', icon: 'form' }
+    //         },
+    //     ]
+    // },
 
     {
         path: '/form',
